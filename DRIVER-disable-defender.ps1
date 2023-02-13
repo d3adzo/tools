@@ -198,37 +198,37 @@ if($need_reboot) {
     }
 
 
-    if($MyInvocation.UnboundArguments -And $($MyInvocation.UnboundArguments.tolower().Contains("-delete"))) {
+    # if($MyInvocation.UnboundArguments -And $($MyInvocation.UnboundArguments.tolower().Contains("-delete"))) {
         
         # Delete Defender files
 
-        function Delete-Show-Error {
-            $path_exists = Test-Path $args[0]
-            if($path_exists) {
-                Remove-Item -Recurse -Force -Path $args[0]
-            } else {
-                Write-Host "    [i] $($args[0]) already deleted"
-            }
-        }
-
-        Write-Host ""
-        Write-Host "[+] Delete Windows Defender (files, services, drivers)"
-
-        # Delete files
-        Delete-Show-Error "C:\ProgramData\Windows\Windows Defender\"
-        Delete-Show-Error "C:\ProgramData\Windows\Windows Defender Advanced Threat Protection\"
-
-        # Delete drivers
-        Delete-Show-Error "C:\Windows\System32\drivers\wd\"
-
-        # Delete service registry entries
-        foreach($svc in $svc_list) {
-            Delete-Show-Error "HKLM:\SYSTEM\CurrentControlSet\Services\$svc"
-        }
-
-        # Delete drivers registry entries
-        foreach($drv in $drv_list) {
-            Delete-Show-Error "HKLM:\SYSTEM\CurrentControlSet\Services\$drv"
+    function Delete-Show-Error {
+        $path_exists = Test-Path $args[0]
+        if($path_exists) {
+            Remove-Item -Recurse -Force -Path $args[0]
+        } else {
+            Write-Host "    [i] $($args[0]) already deleted"
         }
     }
+
+    Write-Host ""
+    Write-Host "[+] Delete Windows Defender (files, services, drivers)"
+
+    # Delete files
+    Delete-Show-Error "C:\ProgramData\Windows\Windows Defender\"
+    Delete-Show-Error "C:\ProgramData\Windows\Windows Defender Advanced Threat Protection\"
+
+    # Delete drivers
+    Delete-Show-Error "C:\Windows\System32\drivers\wd\"
+
+    # Delete service registry entries
+    foreach($svc in $svc_list) {
+        Delete-Show-Error "HKLM:\SYSTEM\CurrentControlSet\Services\$svc"
+    }
+
+    # Delete drivers registry entries
+    foreach($drv in $drv_list) {
+        Delete-Show-Error "HKLM:\SYSTEM\CurrentControlSet\Services\$drv"
+    }
 }
+# }
