@@ -1,12 +1,12 @@
 # Disable Windows Defender
 
 <#
-                           _               _ 
+                           _               _
  __      ____ _ _ __ _ __ (_)_ __   __ _  | |
  \ \ /\ / / _` | '__| '_ \| | '_ \ / _` | | |
   \ V  V / (_| | |  | | | | | | | | (_| | |_|
    \_/\_/ \__,_|_|  |_| |_|_|_| |_|\__, | (_)
-                                   |___/     
+                                   |___/
 
 This script is NOT a disable/enable solution, I'm a malware analyst, I use it for malware analysis.
 It can completely DELETE Defender, and it is NOT REVERSIBLE (that's what I need).
@@ -21,7 +21,7 @@ YOU HAVE BEEN WARNED.
 <#
 Options :
 
--Delete : delete the defender related files (services, drivers, executables, ....) 
+-Delete : delete the defender related files (services, drivers, executables, ....)
 
 Source :  https://bidouillesecurity.com/disable-windows-defender-in-powershell
 
@@ -45,10 +45,10 @@ if(-Not $($(whoami) -eq "nt authority\system")) {
     }
 
     # Elevate to SYSTEM if psexec is available
-    $psexec_path = $(Get-Command PsExec -ErrorAction 'ignore').Source 
+    $psexec_path = $(Get-Command PsExec -ErrorAction 'ignore').Source
     if($psexec_path) {
         Write-Host "    [i] Elevate to SYSTEM"
-        $CommandLine = " -i -s powershell.exe -ExecutionPolicy Bypass `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments 
+        $CommandLine = " -i -s powershell.exe -ExecutionPolicy Bypass `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
         Start-Process -WindowStyle Hidden -FilePath $psexec_path -ArgumentList $CommandLine
         exit
     } else {
@@ -100,7 +100,7 @@ Write-Host "    [+] Disable services"
 
 $need_reboot = $false
 
-# WdNisSvc Network Inspection Service 
+# WdNisSvc Network Inspection Service
 # WinDefend Antivirus Service
 # Sense : Advanced Protection Service
 
@@ -141,7 +141,7 @@ foreach($drv in $drv_list) {
 }
 
 # Check if service running or not
-if($(GET-Service -Name WinDefend).Status -eq "Running") {   
+if($(GET-Service -Name WinDefend).Status -eq "Running") {
     Write-Host "    [+] WinDefend Service still running (reboot required)"
     $need_reboot = $true
 } else {
@@ -157,10 +157,10 @@ Remove-Item -Force "$link_reboot" -ErrorAction 'ignore' # Remove the link (only 
 
 if($need_reboot) {
     Write-Host "    [+] This script will be started again after reboot." -BackgroundColor DarkRed -ForegroundColor White
-    
+
     $powershell_path = '"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"'
     $cmdargs = "-ExecutionPolicy Bypass `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
-    
+
     $res = New-Item $(Split-Path -Path $link_reboot -Parent) -ItemType Directory -Force
     $WshShell = New-Object -comObject WScript.Shell
     $shortcut = $WshShell.CreateShortcut($link_reboot)
@@ -188,7 +188,7 @@ if($need_reboot) {
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Defender\Real-Time Protection" -Name SubmitSamplesConsent -Value 0
         # Tamper protection
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Defender\Features" -Name TamperProtection -Value 4
-        
+
         # Disable in registry
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Defender" -Name DisableAntiSpyware -Value 1
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name DisableAntiSpyware -Value 1
@@ -199,7 +199,7 @@ if($need_reboot) {
 
 
     # if($MyInvocation.UnboundArguments -And $($MyInvocation.UnboundArguments.tolower().Contains("-delete"))) {
-        
+
         # Delete Defender files
 
     function Delete-Show-Error {
