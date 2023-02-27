@@ -134,7 +134,7 @@ Write-Output "Elevating priviledges for this process"
 do {} until (Elevate-Privileges SeTakeOwnershipPrivilege)
 
 ### Adding this command to try to disable it "the right way"
-Set-MpPreference -DisableIntrusionPreventionSystem $true -DisableIOAVProtection $true -DisableRealtimeMonitoring $true -DisableScriptScanning $true 
+Set-MpPreference -DisableIntrusionPreventionSystem $true -DisableIOAVProtection $true -DisableRealtimeMonitoring $true -DisableScriptScanning $true
 
 $tasks = @(
     "\Microsoft\Windows\Windows Defender\Windows Defender Cache Maintenance"
